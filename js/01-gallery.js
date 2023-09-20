@@ -18,7 +18,9 @@ const galleryList = galleryItems
     `;
   })
   .join("");
-  galleryList.addEventListener("click", handleClick);
+  gallery.innerHTML = galleryList;
+  gallery.addEventListener("click", handleClick);
+
   function handleClick(event) {
     event.preventDefault();
     if (event.target.nodeName !== "IMG") {
