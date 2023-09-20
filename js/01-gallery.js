@@ -18,23 +18,28 @@ const galleryList = galleryItems
     `;
   })
   .join("");
-gallery.innerHTML = galleryList;
-const gallaryImages = gallery.querySelectorAll(".gallery__image");
-gallaryImages.forEach((image) => {
-  image.addEventListener("click", (event) => {
+  galleryList.addEventListener("click", handleClick);
+  function handleClick(event) {
     event.preventDefault();
-    const source = image.dataset.source;
-    const alt = image.alt;
-    const instance = basicLightbox.create(`
-// <div class="modal"> 
-//     <img class = gallery__image src="${source}" alt = "${alt}" />
-//     </div>
-// `);
+    if (event.target.nodeName !== "IMG") {
+      return;
+    }
 
+  
+    const instance = basicLightbox.create(`
+        <img src="${event.target.dataset.source}" alt="${event.target.alt}"/>
+    `,{
+      onShow: () => { document.addEventListener("keydown", onEscPress) },
+      onClose: () => {document.removeEventListener("keydown", onEscPress)}
+    });
     instance.show();
-    
-  });
-});
+  
+    function onEscPress(event) {
+      if (event.code === "Escape") {
+        instance.close();
+      }
+    };
+  }
 
 
 console.log(galleryItems);
